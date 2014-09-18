@@ -26,7 +26,7 @@ function md5(hashlength) {
 
         var N = filename.split('.').length;
         filename = filename.split('.').map(function(item, i){
-            return i == N - 2 ? item + '_'+ d : item;
+            return i == N - 2 ? item + '_'+ hash : item;
         }).join('.');
 
         file.path = path.join(dir, filename);
