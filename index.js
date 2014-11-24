@@ -3,14 +3,17 @@ var path = require('path')
 , through = require('through2')
 , crypto = require('crypto');
 
-function md5(hashlength) {
+function md5(hashlength,force) {
     var stream = through.obj(function(file, enc, cb) {
         if ( file.isStream() ) {
             this.emit('error', new gutil.PluginError('gulp-debug', 'Streaming not supported'));
             return cb();
         }
 
-        var hash = calcMd5(file);
+	if ( force !== true ) {
+		force = false;
+	}
+        var hash = calcMd5(file,force);
         if ( null != hashlength ) {
             hash = hash.slice(0,hashlength);
         }
@@ -40,9 +43,14 @@ function md5(hashlength) {
     return stream;
 }
 
-function calcMd5(file){
+function calcMd5(file,force){
+    var content = file.contents;
+    if ( force === true ) {
+        var ts = Date.parse(new Date());
+        content += ts;
+    }
     var md5 = crypto.createHash('md5');
-    md5.update(file.contents, 'utf8');
+    md5.update(content, 'utf8');
     return md5.digest('hex');
 }
 
