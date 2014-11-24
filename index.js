@@ -10,13 +10,16 @@ function md5(hashlength,force) {
             return cb();
         }
 
-	if ( force !== true ) {
-		force = false;
-	}
+        if ( force !== true ) {
+            force = false;
+        }
+
         var hash = calcMd5(file,force);
+
         if ( null != hashlength ) {
             hash = hash.slice(0,hashlength);
         }
+
         var filename = path.basename(file.path);
         var dir;
 
